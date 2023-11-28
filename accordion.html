@@ -1,0 +1,727 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3&display=swap');
+    .accordion__list {
+        height: auto;
+        overflow: hidden;
+    }
+    .accordion {
+        margin: 0 0 40px;
+        position: relative;
+        transition: margin .5s ease-in-out;
+        width: 768px;
+    }
+    
+    .accordion:before {
+        background: #B6B6B6;
+        content: '';
+        height: 1px;
+        position: absolute;
+        right: 0;
+        bottom: -10px;
+        transition: all .5s ease-out;
+        width: 100%;
+    }
+    .accordion__header {
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+    }
+    .accordion__header-title {
+        color: #323732;
+        font-family: 'Source Sans 3';
+        font-size: 22px;
+        font-weight: bold;
+        margin: 0;
+        transition: color .5s ease-in-out;
+    }
+    .accordion__header-btn {
+        border: 1px solid #B6B6B6;
+        border-radius: 5px;
+        width: 18px;
+        height: 18px;
+        position: relative;
+    }
+    .accordion__header-btn::before, .accordion__header-btn::after {
+        background: #B6B6B6;
+        content: '';
+        height: 1px;
+        left: 50%;
+        top: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        transition: transform .5s ease-in-out, background .5s ease-in-out;
+        width: 10px;
+    }
+    .accordion__header-btn::after {
+        transform: translate(-50%, -50%) rotate(90deg);
+    }
+    .accordion__body {
+        margin: 25px 0 0;
+        height: 0;
+        opacity: 0;
+        pointer-events: none;
+        /* transition: all .5s ease-in-out; */
+        z-index: -1;
+    }
+    .accordion__body p {
+        color: #4F4F4F;
+        font-family: 'Source Sans 3';
+        font-size: 18px;
+        font-weight: 400;
+        margin: 20px 0;
+    }
+    .accordion__body p a, .accordion__body ul li a {
+        color: #4D730C;
+        text-decoration: underline;
+    }
+    .accordion__body h6 {
+        color: #4F4F4F;
+        font-family: 'Source Sans 3';
+        font-size: 18px;
+        font-weight: bold;
+        margin: 20px 0;
+    }
+    .accordion__body ul li {
+        color: #4F4F4F;
+        font-family: 'Source Sans 3';
+        font-size: 18px;
+        font-weight: 400;
+    }
+    .accordion__body * {
+        opacity: 0;
+        transition: all .7s ease-in;
+    }
+    .accordion__header:hover .accordion__header-title, .accordion.active .accordion__header-title {
+        color: #4D730C;
+    }
+    .accordion.active:before, .accordion__header:hover .accordion__header-btn::before, .accordion__header:hover .accordion__header-btn::after, .accordion.active .accordion__header-btn::before, .accordion.active .accordion__header-btn::after {
+        background: #4D730C;
+    }
+    .accordion.active .accordion__header-btn {
+        border-color: #4D730C;
+    }
+    .accordion.active {
+        margin: 0 0 60px;
+    }
+    .accordion.active .accordion__header-btn::before {
+        transform: translate(-50%, -50%) rotate(180deg);
+    }
+    .accordion.active .accordion__header-btn::after {
+        transform: translate(-50%, -50%) rotate(-180deg);
+    }
+    .accordion.active .accordion__body {
+        height: auto;
+        padding-bottom: 20px;
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 1;
+    }
+    .accordion.active .accordion__body * {
+        opacity: 1;
+    }
+    @media screen and (max-width: 960px) {
+        .accordion {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .accordion__header-title {
+            width: 80%;
+        }
+        
+        .accordion__body {
+            padding-bottom: 10px;
+        }
+    }
+    
+    @media screen and (max-width: 750px) {
+        .accordion__header-title {
+            font-size: 18px;
+        }
+        
+        .accordion__body p, .accordion__body h6, .accordion__body ul li {
+            font-size: 16px;
+        }
+    }
+    
+    .crp {
+        border: 1px solid #D1D1D1;
+        border-radius: 5px;
+        margin-bottom: 40px;
+        padding: 3px 25px 27px;
+    }
+    
+    .crp h6 {
+        margin-bottom: 0;
+    }
+    
+    .crp p {
+        margin: 5px 0;
+    }
+    
+    .btn {
+        background: #4D730C;
+        border: 1px solid #4D730C;
+        border-radius: 5px;
+        color: #fff;
+        display: block;
+        margin: 25px 0 0;
+        font-family: 'Source Sans 3';
+        padding: 10px 30px;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: all .5s ease-in-out;
+        width: fit-content;
+    }
+    
+    .btn:hover {
+        background: transparent;
+        color: #4D730C;
+    }
+    
+    ::-webkit-scrollbar {
+        background: #fff;
+        border-radius: 10px;
+        width: 5px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: #4D730C;
+        border-radius: 5px;
+    }
+    
+</style>
+
+
+
+<div class="accordion__list">
+    <div class="accordion">
+        <div class="accordion__header flex--sb">
+            <div class="accordion__header-title">Política de privacidade - Dados do uso e do site</div>
+            <div class="accordion__header-btn"></div>
+        </div>
+        
+        <div class="accordion__body">
+            <p>Nós, deste site, estamos comprometidos em resguardar sua privacidade.<br> O intuito deste documento é esclarecer quais informações são coletadas dos usuários de nosso site <a href="http://www.ouvirciente.com.br">http://www.ouvirciente.com.br</a> e dos respectivos serviços. E esclarecer de que forma esses dados são manipulados e/ou utilizados.<br> Alertamos que se você não concorda com o conteúdo desta política, não é recomendável baixar nossos materiais nem utilizar quaisquer de nossos serviços.</p>
+            
+            <h6>Sobre nossa coleta de dados</h6>
+            <p>Em nossos sites, as informações são coletadas das seguintes formas:</p>
+            <p>Informações fornecidas por você - coletamos informações de identificação pessoal como: nome, telefone, e-mail, via preenchimento dos formulários. Eventualmente pode ocorrer a solicitação de algumas outras informações por meio de contato direto com os usuários via e-mail ou telefone/Whatsapp.</p>
+            <p>Informações de navegação no site - Quando você visita nosso site, é inserido um 'cookie' no seu navegador por meio do software Google Analytics, para identificar quantas vezes você retorna ao nosso endereço. São coletadas, anonimamente, informações, como endereço IP, localização geográfica, fonte de referência, tipo de navegador, duração da visita e páginas visitadas. (Ver política de Cookies).</p>
+            
+            <h6>Histórico de contato</h6>
+            <p>Armazenamos informações a respeito de todos os contatos já realizados com nossos usuários, como conteúdos baixados a partir de nossas páginas e interações via outras formas de contato.</p>
+            <p>Todas as informações trocadas na orientação psicológica são de responsabilidade do psicólogo que deverá manter o sigilo das informações, segundo o Código de Ética do Psicólogo, vigente no Brasil. Este site, OuvirCiente, não manterá no site, nenhum registro das informações trocadas nos atendimentos psicológicos online.</p>
+            <p>É importante destacar, que apesar do site OuvirCiente garantir o sigilo de todas as informações transitadas dentro do site, alertamos que as trocas de informações feitas através da internet não são consideradas totalmente seguras, havendo riscos envolvidos.</p>
+            <p>Os psicólogos protegem as informações do PACIENTE, de acordo com o Código de Ética profissional, entretanto é de responsabilidade do usuário, o cuidado com os equipamentos tecnológicos utilizados, devendo ser monitorados pelo CLIENTE/USUÁRIO.</p>
+            <p>Aconselhamos aos clientes a não utilização de computadores de uso público. Sugerimos ainda que todos os históricos de conversas sejam apagados e a utilização de um programa de ANTIVIRUS, para maior segurança.</p>
+            
+            <h6>Sobre o uso de informações pessoais</h6>
+            <p>O presente termo permite que o OuvirCiente use suas informações pessoais para diferentes finalidades.</p>
+            <p>O e-mail é utilizado para a operação de envio do material ou informação por você requisitada no preenchimento do formulário. Também pode ser usado para envio de Newsletters, sempre relacionadas contexto.</p>
+            <p>Por fim, o e-mail será utilizado ainda para comunicar o lançamento de novos materiais ou de novos produtos da OuvirCiente e parceiros. No entanto, o usuário pode cancelar a assinatura a qualquer momento.</p>
+            <p>Os dados de download poderão ser divulgados como pesquisas e estatísticas, não sendo reveladas abertamente nenhuma informação pessoal, a menos que autorizada explicitamente por escrito.</p>
+            <p>Funcionários da OuvirCiente poderão eventualmente entrar em contato via e-mail ou telefone/WhatsApp para fazer pesquisas ou apresentar produtos e serviços.</p>
+            <p>Ao solicitar um teste gratuito o usuário recebe um termo de adesão que especifica as informações extras que serão solicitadas para a utilização, bem como sua política de privacidade e o sigilo com que serão tratadas essas informações.</p>
+            <p>Suas informações pessoais não serão compartilhadas com outros fora do contexto da terapia.</p>
+            
+            <h6>Sobre o acesso às suas informações pessoais</h6>
+            <p>Poderão ver suas informações pessoais apenas funcionários da OuvirCiente. Eventualmente, caso a inserção de suas informações se dê em ações criadas em parcerias, os parceiros explicitamente identificados também terão acesso à informação. Nenhuma informação pessoal poderá ser divulgada publicamente. E nada do que é conversado entre você e seu psicólogo é gravado, registrado ou informado sem a devida autorização por escrito. Tudo, trafega através de protocolo seguro https para garantir a inviolabilidade da sua privacidade.</p>
+            <p>O OuvirCiente também se compromete a não vender, alugar ou repassar suas informações para terceiros. A única exceção está em casos em que essas informações forem exigidas judicialmente.<br> Além disso, embora trabalhemos com boas práticas de proteção e segurança, nenhum serviço web possui 100% de garantia contra invasões e não podemos nos responsabilizar caso isso ocorra.</p>
+            
+            <h6>Sobre o compartilhamento de conteúdo nas redes sociais</h6>
+            <p>Ao clicar nos botões de compartilhamento de conteúdo nas mídias sociais disponíveis em nossas páginas, o usuário estará publicando o conteúdo por meio de seu perfil na rede selecionada. O OuvirCiente não tem acesso ao login e senha dos usuários nessas redes, nem publicará conteúdo em nome do usuário.</p>
+            
+            <h6>Sobre o cancelamento da assinatura e alteração/exclusão de informações pessoais</h6>
+            <p>Você pode optar por não receber mais qualquer tipo de e-mail da OuvirCiente. Para não receber mais e-mails, basta responder a uma comunicação com a solicitação de exclusão do mesmo.<br> É importante mencionar que ao preencher qualquer formulário novamente ficará caracterizada a reinserção do seu e-mail à lista. Portanto, a requisição de cancelamento deve ser feita novamente caso seja de seu interesse.</p>
+            
+            <h6>Mudanças na Política de Privacidade</h6>
+            <p>Essa Política de Privacidade pode passar por atualizações. Desta forma, recomendamos visitar periodicamente esta página para que você tenha conhecimento sobre as modificações.<br> Antes de usar informações para outros fins que não os definidos nesta Política de Privacidade, solicitaremos sua autorização.</p>
+            
+            <h6>Contato com o OuvirCiente para esclarecimento de dúvidas</h6>
+            <p>Qualquer dúvida em relação à nossa política de privacidade pode ser esclarecida entrando em contato conosco através de qualquer um dos nossos canais de atendimento.</p>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion__header flex--sb">
+            <div class="accordion__header-title">Política de uso da internet</div>
+            <div class="accordion__header-btn"></div>
+        </div>
+        <div class="accordion__body">
+            <h6>Introdução</h6>
+            <p>Adaptação do LGPD e a Psicologia.</p>
+            
+            <h6>Disponibilizamos esta política de privacidade, que contém informações importantes sobre:</h6>
+            <ul>
+                <li>Quem deve utilizar este website</li>
+                <li>Quais dados coletamos e o que fazemos com eles</li>
+                <li>Seus direitos em relação aos seus dados pessoais</li>
+                <li>Como entrar em contato conosco</li>
+            </ul>
+            <p>Esta política explica o que faremos com suas informações pessoais e visa esclarecer a todos os(as) interessados(as) sobre os tipos de dados que coletamos, os motivos da coleta e a forma como os usuários deste site podem gerenciar ou excluir suas informações pessoais.</p>
+            <p>Os presentes termos foram elaborados em conformidade com a Lei Geral de Proteção de Dados Pessoais (Lei 13.709/18), o <a href="https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm" target="_blank">Marco Civil da Internet (Lei 12.965/14).</a></p>
+            
+            <h6>1) Quem deve utilizar este site</h6>
+            <p>O site OuvirCiente só deve ser utilizado por pessoas com mais de 18 anos de idade. Crianças e adolescentes podem utilizar se estiverem acompanhadas dos pais ou responsáveis legais.</p>
+            
+            <h6>2) Dados que coletamos e motivos da coleta</h6>
+            <p>Nosso site coleta e utiliza alguns dados pessoais dos visitantes e usuários da seguinte forma:</p>
+            
+            <h6>2.1) Dados pessoais fornecidos expressamente pelo usuário</h6>
+            <p>Coletamos os seguintes dados pessoais que os usuários nos fornecem ao utilizar nosso site:</p>
+            <ul>
+                <li>Nome Completo;</li>
+                <li>Endereço de e-mail;</li>
+                <li>Números de Telefone;</li>
+                <li>Mensagens de contato.</li>
+            </ul>
+            <p>A coleta destes dados ocorre nos seguintes momentos:</p>
+            <ul>
+                <li>Quando o usuário utiliza o formulário de contato;</li>
+                <li>Quando o usuário entra em contato por meio de aplicativos de mensagens, chats, ligações telefônicas, videochamadas ou outra via;</li>
+                <li>Quando o usuário se cadastra para receber boletins, descontos e materiais como infográficos, e-books, pesquisas, estudos de casos e planilhas, entre outros conteúdos;</li>
+                <li>Quando o usuário solicita uma cotação ou contratação de serviço;</li>
+                <li>Quando o usuário agenda uma reunião, consulta ou demonstração de nossos serviços;</li>
+                <li>Quando o usuário participa de estudos, enquetes e pesquisas;</li>
+            </ul>
+            <p>Os dados fornecidos por nossos usuários são coletados com as seguintes finalidades:</p>
+            <ul>
+                <li>Para orçar ou contratar nossos serviços;</li>
+                <li>Para entrar em contato com nosso atendimento ao cliente;</li>
+                <li>Para enviar materiais informativos e conteúdos educativos;</li>
+                <li>Para que nossos colaboradores possam entrar em contato via e-mail, telefone, chat e mensagens de texto para fazer pesquisas e/ou apresentar produtos e serviços.</li>
+                <li>Para enviar faturas e lembretes de pagamento;</li>
+                <li>Para enviar mensagens relativas ao suporte ou serviços, como alertas, notificações e atualizações;</li>
+                <li>Para enviar lembretes e notificações de reuniões e eventos;</li>
+                <li>Para todo e qualquer fim que o usuário nos autorizar no momento da coleta dos dados;</li>
+                <li>Para criação de conta / perfil em nossa plataforma;</li>
+                <li>Para cumprir com nossas obrigações legais, regulatórias e fiscais;</li>
+            </ul>
+            
+            <h6>2.2) Dados pessoais comportamentais:</h6>
+            <p>Quando o usuário visita o nosso website, é inserido um ‘cookie’ em seu navegador por meio do software Google Analytics, para identificar quantas vezes visitou o nosso endereço eletrônico, quanto tempo permaneceu em nosso website, desde que cidade nos acessou e quais páginas leu e recomendou, entre outros.</p>
+            <p>Coletamos os seguintes dados pessoais através de cookies e outras formas que os usuários geram e/ou nos fornecem ao utilizar nosso site:</p>
+            <ul>
+                <li>Endereço IP;</li>
+                <li>Dados de geolocalização e localização geográfica;</li>
+                <li>Palavras-chave e termos buscados;</li>
+                <li>Fonte de referência, tipo e versão de navegador;</li>
+                <li>Páginas visitadas, tempo de duração de cada visita e histórico de visitas;</li>
+                <li>Dados contextuais baseados na experiência de navegação, como datas e horários de acesso mais frequentes, contagem de cliques em links e botões, número de downloads de materiais, aberturas de newsletters, entre outros;</li>
+                <li>Dados de transações e pagamentos feitas por meio do site;</li>
+            </ul>
+            <p>A coleta destes dados ocorre nos seguintes momentos:</p>
+            <ul>
+                <li>Quando o usuário visita uma de nossas páginas;</li>
+                <li>Quando lê e/ou comenta uma de nossas publicações e postagens;</li>
+                <li>Quando assiste um de nossos vídeos online;</li>
+                <li>Quando o usuário faz login e logout no site;</li>
+                <li>Quando o usuário utiliza aplicativos de mensagens ou chats;</li>
+                <li>Quando o usuário entra em contato por e-mail, telefone ou formulário;</li>
+                <li>Quando o usuário se cadastra para receber boletins, vídeos, planilhas, e-books, textos, infográficos ou quaisquer outros conteúdos e materiais;</li>
+                <li>Quando o usuário clica em links, botões, anúncios, imagens e vídeos;</li>
+                <li>Quando o usuário participa de enquetes e pesquisas online;</li>
+                <li>Quando o usuário reenvia ou compartilha nossas páginas e conteúdos;</li>
+                <li>Quando o usuário solicita uma cotação ou contratação de serviço;</li>
+                <li>Quando realiza algum tipo de interação com nosso site;</li>
+                <li>Quando o usuário faz uma compra online;</li>
+            </ul>
+            <p>Os dados gerados e/ou fornecidos por nossos usuários são coletados com as seguintes finalidades:</p>
+            <ul>
+                <li>Para garantir a segurança do website;</li>
+                <li>Para detectar comportamento fora do habitual e brechas de segurança;</li>
+                <li>Para rastrear de onde partem possíveis tentativas de invasão;</li>
+                <li>Para cumprir determinação legal de armazenamento de registros de acesso, conforme o disposto no art. 15 do Marco Civil da Internet;</li>
+                <li>Para gerar estatísticas de visitação e de interação com nosso site;</li>
+                <li>Para desenvolver novas funcionalidades em nosso website;</li>
+                <li>Para otimizar e aprimorar a navegação, usabilidade e layout do site;</li>
+                <li>Para compreender como os usuários utilizam nosso site e ajudar nas pesquisa de novas soluções, cursos, conteúdos, produtos e serviços;</li>
+                <li>Para realizar anúncios e comunicação direcionada aos gostos e interesses do usuários;</li>
+                <li>Para personalizar a experiência do usuário que visita nosso site;</li>
+                <li>Para todo e qualquer fim que o usuário nos autorizar no momento da recolha dos dados;</li>
+                <li>Para assegurar a autenticidade das transações feitas no site;</li>
+                <li>Para cumprir com nossas obrigações legais e regulatórias;</li>
+            </ul>
+            
+            <h6>2.3) Dados pessoais sensíveis:</h6>
+            <p>O site poderá coletar os seguintes dados sensíveis dos usuários:</p>
+            <ul>
+                <li>Dados relativos à saúde do usuário;</li>
+                <li>Dados relativos à vida sexual ou à orientação sexual do usuário;</li>
+            </ul>
+            <p>Os dados sensíveis fornecidos por nossos usuários podem ser coletados com as seguintes finalidades:</p>
+            <ul>
+                <li>Para prestação de serviços psicológicos;</li>
+                <li>Para marcação de consultas presenciais ou online (via telemedicina);</li>
+                <li>Para solicitar a realização de análises e testes psicológicos;</li>
+                <li>Para elaboração de diagnósticos, análises e orientações;</li>
+                <li>Para realizar acompanhamento emocional e psicológico;</li>
+                <li>Para cumprimento de protocolos do sistema de saúde;</li>
+                <li>Para proteção contra fraude em seguros de saúde;</li>
+            </ul>
+            <p>A coleta e a utilização dos dados pessoais sensíveis serão feitas com o consentimento específico de seus titulares, exceto nos casos em que a Lei Geral de Proteção de Dados permitir o tratamento com fundamento em outras bases legais distintas do consentimento. Em qualquer caso, o tratamento dos dados sensíveis ocorrerá para atender a finalidades específicas expressas nesta política ou devidamente informada ao usuário por outros meios.</p>
+            
+            <h6>2.4) Dados de crianças e adolescentes:</h6>
+            <p>Coletamos alguns dados de crianças e adolescentes que os pais ou responsáveis nos fornecem ao utilizar nosso site.</p>
+            <p>Coletamos os seguintes dados de crianças e adolescentes que os usuários nos fornecem ao utilizar nosso site:</p>
+            <ul>
+                <li>Nome Completo;</li>
+                <li>Endereço de e-mail;</li>
+                <li>Números de Telefone;</li>
+                <li>Mensagens de contato;</li>
+            </ul>
+            <p>A coleta de dados de crianças e adolescentes ocorre nos seguintes momentos:</p>
+            <ul>
+                <li>Quando os pais ou responsáveis preenchem formulários com dados de sua família;</li>
+                <li>Quando os pais ou responsáveis entram em contato por meio de aplicativos de mensagens, chats, ligações telefônicas, videochamadas ou outra via;</li>
+                <li>Quando os pais ou responsáveis agendam uma consulta ou procedimento médico;</li>
+            </ul>
+            <p>Os dados fornecidos por nossos usuários menores de 18 anos são coletados com as seguintes finalidades:</p>
+            <ul>
+                <li>Para que serviços psicológicos destinados a crianças e adolescentes possam ser acessados;</li>
+                <li>Para que os pais possam utilizar as funcionalidades disponíveis no site;</li>
+                <li>Para que os pais possam orçar ou contratar nossos serviços psicológicos;</li>
+                <li>Para entrar em contato com nosso atendimento ao cliente;</li>
+                <li>Para enviar materiais informativos e conteúdos educativos;</li>
+                <li>Para comunicar as ofertas, anúncios e promoções direcionadas para os pais e familiares das crianças e adolescentes;</li>
+                <li>Para entrar em contato com os pais e familiares adultos, via e-mail, telefone, chat e mensagens de texto para fazer pesquisas e/ou apresentar produtos e serviços;</li>
+                <li>Para enviar faturas e lembretes de pagamento para seus pais ou responsáveis;</li>
+                <li>Para enviar mensagens relativas ao suporte ou serviços, como alertas, notificações e atualizações;</li>
+                <li>Para enviar lembretes e notificações de agendamento de consultas;</li>
+                <li>Para todo e qualquer fim que o usuário adolescente e/ou o adulto responsável nos autorizar no momento da coleta dos dados;</li>
+                <li>Para solicitar uma transação online;</li>
+                <li>Para cumprir com nossas obrigações legais, regulatórias e fiscais;</li>
+            </ul>
+            
+            <h6>2.5) Cookies:</h6>
+            <p>Cookies são pequenos arquivos de texto baixados automaticamente em seu dispositivo quando você acessa e navega por um site. Eles servem, para que seja possível identificar dispositivos, atividades e preferências de usuários.</p>
+            <p>Os cookies não permitem que qualquer arquivo ou informação sejam extraídos do disco rígido do usuário. Não sendo possível que, por meio dos cookies, se tenha acesso a informações pessoais que não tenham partido do usuário ou da forma como utiliza os recursos e funcionalidades do site.</p>
+            <p>A desativação dos cookies que podem ser desabilitados poderá prejudicar a experiência do usuário, uma vez que informações utilizadas para as personalizar deixarão de ser utilizadas.</p>
+            
+            <h6>a) Cookies do Site</h6>
+            <p>Os cookies do site são aqueles enviados ao computador ou dispositivo do usuário, exclusivamente pelo website. As informações coletadas por meio destes cookies são utilizadas para melhorar e personalizar a experiência do usuário, sendo que alguns cookies podem, por exemplo, ser utilizados para lembrar as preferências e escolhas do usuário, bem como para o oferecimento de conteúdo personalizado.</p>
+            
+            <h6>b) Cookies de Terceiros</h6>
+            <p>Alguns de nossos parceiros podem configurar cookies nos dispositivos dos usuários que acessam nosso site. Estes cookies, em geral, visam possibilitar que nossos parceiros possam oferecer seu conteúdo e seus serviços ao usuário que acessa nosso site de forma personalizada, por meio da obtenção de dados de navegação extraídos a partir de sua interação com o site.</p>
+            <p>O usuário poderá obter mais informações sobre os cookies de terceiros e sobre a forma como os dados obtidos a partir dele são tratados, além de ter acesso à descrição dos cookies utilizados e de suas características, acessando os seguintes links:</p>
+            <ul>
+                <li>Google Analytics: <a href="https://developers.google.com/analytics/devguides/collection/gajs/cookie-usage;" target="_blank">https://developers.google.com/analytics/devguides/collection/gajs/cookie-usage;</a></li>
+                <li>Pixel do Facebook: <a href="https://pt-br.facebook.com/business/help/471978536642445?id=1205376682832142" target="_blank">https://pt-br.facebook.com/business/help/471978536642445?id=1205376682832142</a></li>
+            </ul>
+            
+            <h6>c) Gestão de Cookies</h6>
+            <p>O usuário poderá se opor ao registro de cookies pelo site, bastando que desative esta opção no seu próprio navegador. Mais informação sobre como fazer isso em alguns dos principais navegadores utilizados hoje podem ser acessados a partir dos seguintes links:</p>
+            <ul>
+                <li>Internet Explorer: <a href="https://support.microsoft.com/pt-br/topic/excluir-e-gerenciar-cookies-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank">https://support.microsoft.com/pt-br/topic/excluir-e-gerenciar-cookies-168dab11-0753-043d-7c16-ede5947fc64d</a></li>
+                <li>Safari: <a href="https://support.apple.com/pt-br/guide/safari/sfri11471/mac" target="_blank">https://support.apple.com/pt-br/guide/safari/sfri11471/mac</a></li>
+                <li>Google Chrome: <a href="https://support.google.com/chrome/answer/95647" target="_blank">https://support.google.com/chrome/answer/95647</a></li>
+                <li>Mozila Firefox: <a href="https://support.mozilla.org/pt-BR/kb/cookies-informacoes-sites-armazenam-no-computador#w_configuracoes-de-cookies" target="_blank">https://support.mozilla.org/pt-BR/kb/cookies-informacoes-sites-armazenam-no-computador#w_configuracoes-de-cookies</a></li>
+                <li>Opera: <a href="https://www.opera.com/pt/secure-private-browser" target="_blank">https://www.opera.com/pt/secure-private-browser</a></li>
+            </ul>
+            <p>O usuário também poderá se opor à utilização de cookies pelo próprio site, bastando que os desative quando começar a utilizar o site pela primeira vez, clicando no aviso de cookies e depois desativando esta opção no seu navegador, para se assegurar de que o registro de cookies foi desativado.</p>
+            <p>Assim que entrar no site pela primeira vez, o usuário terá a opção de bloquear ou de permitir a utilização de cookies, bastando que selecione a opção correspondente na caixa de diálogo (aviso de cookies) carregada automaticamente assim que nossa página é acessada.</p>
+            <p>A desativação dos cookies, no entanto, pode afetar a disponibilidade de algumas ferramentas e funcionalidades do site, comprometendo seu correto e esperado funcionamento. Outra consequência possível é a remoção das preferências do usuário que eventualmente tiverem sido salvas, prejudicando sua experiência de navegação.</p>
+            <p>A desativação de todos os cookies, no entanto, não será possível, uma vez que alguns deles são essenciais para que o site funcione corretamente.</p>
+            
+            <h6>3 – Compartilhamento de Dados com Terceiros</h6>
+            <p>Os dados coletados através deste site podem ser compartilhados com as seguintes empresas, aplicações e/ou ferramentas:</p>
+            <ul>
+                <li>Compartilhamos alguns dados com o Google e outras ferramentas de Analytics para realizar análises e gerar relatórios;</li>
+                <li>Podemos compartilhar dados com ferramentas de construção de páginas web, formulários online e envio de boletins via e-mail;</li>
+                <li>Empresas parceiras ou contratadas para fornecer serviços terceirizados como agências de marketing, softwares de gestão, aplicativos de automação, auditorias e/ou processadoras de pagamento;</li>
+                <li>Autoridades judiciais, administrativas ou governamentais competentes, sempre que houver determinação legal, requerimento, requisição ou ordem judicial;</li>
+            </ul>
+            <p>Estes dados são compartilhados pelas seguintes razões e para as seguintes finalidades:</p>
+            <ul>
+                <li>Para que os usuários possam receber experiência de navegação, ofertas de produtos e serviços personalizados, de acordo a seus interesses;</li>
+                <li>Podemos compartilhar dados com empresas parceiras que fornecem serviços ou aplicativos de marketing, pagamento e processamento de dados, para fins de viabilizar pagamentos, auditorias, pesquisas, estudos, análises, criação de conteúdo personalizado, campanhas de publicidade, automatizar tarefas e/ou melhorar o nosso atendimento;</li>
+                <li>Para todo e qualquer fim que o usuário nos autorize no momento da coleta dos dados;</li>
+            </ul>
+            <p>Além das situações aqui informadas, é possível que compartilhemos dados com terceiros para cumprir alguma determinação legal, técnica ou regulatória. No caso de Informações a serem compartilhadas em cumprimento de solicitação de autoridade pública, a mesma sempre será efetuada mediante ordem judicial, conforme definido em Lei.</p>
+            <p>Em qualquer caso, o compartilhamento de dados pessoais observará todas as leis e regras aplicáveis, buscando sempre garantir a segurança dos dados de nossos usuários, observados os padrões técnicos e boas práticas de segurança da informação.</p>
+            <p>Ao continuar utilizando este site você nos autoriza a compartilhar seus dados.</p>
+            <p>Este website poderá operar em conjunto de outras empresas numa ampla gama de atividades em conjunto com anunciantes, patrocinadores, fornecedores e parceiros comerciais, online e offline, além das ferramentas de divulgação, publicidade e análises de desempenho.</p>
+            <p>Nos reservamos ao direito de compartilhar as suas informações, incluindo os dados de localização, cadastro e de interesses, com nossos parceiros, anunciantes, fornecedores e provedores de serviços, sempre que for possível, de forma anônima, visando preservar a sua privacidade. Por meio deste documento, você autoriza-nos expressamente tais compartilhamentos.</p>
+            <p>Este site permite que outras empresas e redes de anúncio façam publicidade na nossa plataforma por meio de diferentes tecnologias. Portanto, poderá eventualmente receber diretamente anúncios, conteúdo e links exibidos de forma personalizada, de acordo com os seus interesses e comportamentos na nossa plataforma, redes sociais online ou em outros serviços com os quais interage. Para tanto, os dados podem ser compartilhados entre nós e essas outras empresas, principalmente identificadores únicos, endereços IP, cookies e scripts java, que podem ser utilizados para medir a eficiência da publicidade online. Por meio deste documento, autoriza-nos expressamente a realizar o compartilhamento de seus dados.</p>
+            <p>Não nos responsabilizamos pelos atos, anúncios e conteúdo gerados por nossos parceiros comerciais e redes de anúncio, e esta Política não é aplicada aos mesmos, uma vez que nós não as controlamos.</p>
+            <p>Todos os seus dados, informações e conteúdos podem ser considerados ativos no caso das negociações em que fizermos parte. Portanto, reservamo-nos o direito de incluir os seus dados dentre os ativos da empresa caso esta venha a ser vendida, adquirida ou fundida com outra. Por meio desta Política você concorda e está ciente desta possibilidade.</p>
+            
+            <h6>4 – Por quanto tempo seus dados pessoais são armazenados</h6>
+            <p>Os dados pessoais coletados através do site são armazenados e utilizados pelo período de tempo que for necessário para atingir as finalidades elencadas neste documento e que considere os direitos de seus titulares, os direitos do controlador do site e as disposições legais ou regulatórias aplicáveis.</p>
+            <p>O tempo mínimo de armazenamento é de 6 meses para dados comportamentais, segundo o Art. 15 do Marco Civil da Internet e de 5 anos após o término da relação com o usuário para dados cadastrais, segundo o Art. 27 do Código de Defesa do Consumidor.</p>
+            <p>Uma vez expirados os períodos de armazenamento dos dados pessoais, eles podem vir a ser removidos de nossas bases de dados ou anonimizados, salvo nos casos em que houver a possibilidade e/ou a necessidade de armazenamento em virtude de disposição legal ou regulatória.</p>
+            <p>Caso haja solicitação do Usuário, os dados poderão ser apagados antes desse prazo. No entanto, pode ocorrer de os dados precisarem ser mantidos por período superior, por motivo de lei, ordem judicial, prevenção à fraude (art. 11, II, “a” da Lei Geral de Proteção de Dados “LGPD”, Lei nº 13.709/2018), proteção ao crédito (art. 7º, X, LGPD) e outros interesses legítimos, em conformidade com o artigo 10 da LGPD. Findo o prazo e a necessidade legal, serão excluídos com uso de métodos de descarte seguro, ou utilizados de forma anonimizada para fins estatísticos.</p>
+            <p>Ressaltamos que os dados poderão continuar armazenados se houver alguma justificativa legal ou regulatória, ainda que tenha se exaurido a finalidade para a qual os dados tenham sido coletados e/ou tratados.</p>
+            <p>Os dados são armazenados de forma contínua enquanto o usuário tiver uma conta ativa em nosso site e/ou continuar utilizando, navegando, interagindo, comunicando-se e mantendo algum tipo de relação ou contato conosco. Uma vez finalizado o tratamento e/ou a relação com o usuário, observadas as disposições desta seção, os dados são apagados ou anonimizados.</p>
+            
+            <h6>5 – Bases legais para o tratamento de dados pessoais</h6>
+            <p>Nós tratamos os dados pessoais de nossos usuários mediante os seguintes fundamentos legais, que justificam o tratamento de dados:</p>
+            
+            <h6>5.1 - Dados pessoais não sensíveis</h6>
+            <ul>
+                <li>mediante o consentimento do titular dos dados pessoais;</li>
+                <li>para o cumprimento de obrigação legal ou regulatória pelo controlador;</li>
+                <li>para o exercício regular de direitos em processo judicial, administrativo ou arbitral;</li>
+                <li>para execução de contrato ou de procedimentos preliminares relacionados a contrato do qual seja parte o titular, a pedido do titular dos dados pessoais;</li>
+                <li>para proteção do crédito quando necessário para atender aos interesses legítimos do controlador ou de terceiros;</li>
+                <li>Para proteção da vida ou integridade física de titular ou terceiro;</li>
+            </ul>
+            
+            <h6>5.2 - Dados de crianças e adolescentes</h6>
+            <ul>
+                <li>O tratamento de dados de crianças e adolescentes é feito com base no consentimento de pelo menos um de seus pais ou responsáveis.</li>
+                <li>Poderão ser coletados dados pessoais de crianças sem o consentimento mencionado no parágrafo anterior quando a coleta for necessária para contatar os pais ou o responsável legal, utilizados uma única vez e sem armazenamento, ou para sua proteção.</li>
+            </ul>
+            
+            <h6>5.3 - Consentimento do Titular</h6>
+            <ul>
+                <li>Ao utilizar este site, solicitar serviços e/ou fornecer informações pessoais o usuário está consentindo com a presente política de privacidade.</li>
+                <li>Determinadas operações de tratamento de dados pessoais realizadas em nosso site dependerão da prévia concordância do usuário, que deverá manifestá-la de forma livre, informada e inequívoca.</li>
+                <li>O usuário, ao visitar este site, entrar em contato, ao cadastrar-se e/ou ao realizar qualquer tipo de interação conosco, manifesta conhecer a presente política e pode exercer seus direitos de cancelar seu cadastro, atualizar seus dados pessoais e garante a veracidade das informações por ele disponibilizadas.</li>
+                <li>O usuário poderá revogar seu consentimento a qualquer momento e solicitar a exclusão de seus dados, sendo que, não havendo hipótese legal que permita ou que demande o armazenamento de dados, os dados fornecidos mediante consentimento serão excluídos.</li>
+            </ul>
+            
+            <h6>5.4 - Cumprimento de obrigação legal ou regulatória pelo controlador</h6>
+            <ul>
+                <li>Algumas operações de tratamento de dados pessoais, sobretudo o armazenamento de dados, serão realizadas para que possamos cumprir obrigações previstas em lei ou em outras disposições normativas aplicáveis às nossas atividades.</li>
+            </ul>
+            
+            <h6>5.5 - Execução de contrato</h6>
+            <ul>
+                <li>Para a execução de contrato compra e venda ou de prestação de serviços, eventualmente firmado entre o site o usuário, poderão ser coletados e armazenados outros dados relacionados e/ou necessários a sua execução, incluindo o teor de eventuais comunicações tidas com o usuário.</li>
+            </ul>
+            
+            <h6>6 - Direitos do Usuário</h6>
+            <p>O usuário do site possui os seguintes direitos, conferidos pela Lei Geral de Proteção de Dados Pessoais:</p>
+            <ul>
+                <li>Confirmação da existência de tratamento;</li>
+                <li>Acesso aos dados;</li>
+                <li>Correção de dados incompletos, inexatos ou desatualizados;</li>
+                <li>Anonimização, bloqueio ou eliminação de dados desnecessários, excessivos ou tratados em desconformidade com o disposto na lei;</li>
+                <li>Portabilidade dos dados a outro fornecedor de serviço ou produto, mediante requisição expressa, de acordo com a regulamentação da autoridade nacional, observados os segredos comercial e industrial;</li>
+                <li>Eliminação dos dados pessoais tratados com o consentimento do titular, exceto nos casos previstos em lei;</li>
+                <li>Informação das entidades públicas e privadas com as quais o controlador realizou uso compartilhado de dados;</li>
+                <li>informação sobre a possibilidade de não fornecer consentimento e sobre as consequências da negativa;</li>
+                <li>revogação do consentimento.</li>
+            </ul>
+            <p>É importante destacar que, nos termos da LGPD, não existe um direito de eliminação de dados tratados com fundamento em bases legais distintas do consentimento, a menos que os dados sejam desnecessários, excessivos ou tratados em desconformidade com o previsto na lei.</p>
+            
+            <h6>6.1 - Como o titular pode exercer seus direitos</h6>
+            <ul>
+                <li>Os titulares de dados pessoais tratados por nós poderão exercer seus direitos por meio do formulário disponibilizado no seguinte caminho: <a href="https://www.ouvirciente.com.br/contact-6">https://www.ouvirciente.com.br/contact-6</a>.</li>
+                <li>Alternativamente, se desejar, o titular poderá enviar um e-mail para o seguinte endereço: <a href="mailto:psicologoairtonmolena@gmail.com">psicologoairtonmolena@gmail.com</a>.</li>
+                <li>Os titulares de dados pessoais tratados por nós poderão exercer seus direitos a partir do envio de mensagem para nosso Encarregado de Proteção de Dados Pessoais seja por e-mail, formulário ou correspondência. As informações necessárias estão na seção "Como entrar em contato conosco" desta Política de Privacidade.</li>
+                <li>Para garantir que o usuário que pretende exercer seus direitos é, de fato, o titular dos dados pessoais objeto da requisição, poderemos solicitar documentos ou outras informações que possam auxiliar em sua correta identificação, a fim de resguardar nossos direitos e os direitos de terceiros. Isto somente será feito, porém, se for absolutamente necessário, e o requerente receberá todas as informações relacionadas.</li>
+            </ul>
+            
+            <h6>7 - Medidas de segurança no tratamento de dados pessoais</h6>
+            <p>Empregamos medidas técnicas e administrativas aptas a proteger os dados pessoais de acessos não autorizados e de situações de destruição, perda, extravio ou alteração desses dados.</p>
+            <p>As medidas que utilizamos levam em consideração a natureza dos dados, o contexto e a finalidade do tratamento, os riscos que uma eventual violação geraria para os direitos e liberdades do usuário, as normas de segurança internacionais como a ISO 27001 e os padrões empregados atualmente por empresas semelhantes à nossa.</p>
+            <p>Entre as medidas de segurança adotadas por nós, destacamos as seguintes:</p>
+            <ul>
+                <li>Armazenamento de senhas utilizando criptografia;</li>
+                <li>Restrições de acesso aos bancos de dados;</li>
+                <li>Monitoramento de acesso aos servidores;</li>
+                <li>Certificado de Segurança (SSL);</li>
+            </ul>
+            <p>Ainda que façamos tudo que estiver ao nosso alcance para evitar incidentes de segurança, é possível que ocorra algum problema motivado exclusivamente por um terceiro, como em caso de ataques de hackers ou crackers ou, ainda, em casos de responsabilidade exclusiva do usuário, que ocorre, por exemplo, quando ele mesmo transfere seus dados a um terceiro. Assim, embora sejamos, em geral, responsáveis pelos dados pessoais que tratamos, nos eximimos de responsabilidade caso ocorra uma situação excepcional como essas, sobre as quais não temos nenhum tipo de controle.</p>            
+            <p>De qualquer forma, caso ocorra qualquer tipo de incidente de segurança que possa gerar risco ou dano relevante para qualquer de nossos usuários, comunicaremos os afetados e a Autoridade Nacional de Proteção de Dados acerca do ocorrido, em conformidade com o disposto na Lei.</p>
+            
+            <h6>8 – Acesso ao Site</h6>
+            <p>O usuário se declara ciente de que seu login e senha são de uso pessoal e intransferível e que deverá mantê-lo sob sigilo e em ambiente seguro.</p>
+            <p>Ao acessar em nosso site/aplicativo o usuário não deve utilizar como próprio o login e senha alheia ou ceder a outrem, para que dele se utilize.</p>
+            
+            <h6>9 - Alterações nesta política</h6>
+            <p>A presente versão desta Política de Privacidade foi atualizada pela última vez em: 23/11/2022.</p>
+            <p>Nos reservamos o direito de modificar a política de privacidade a qualquer momento, especialmente para adaptá-las às alterações feitas em nosso site, seja pela disponibilização de novas funcionalidades, seja pelo cancelamento ou modificação daquelas já existentes.</p>
+            <p>Sempre que houver uma modificação, nossos usuários serão notificados sobre a mudança.</p>
+            
+            <h6>10 - Como entrar em contato conosco</h6>
+            <p>Para esclarecer quaisquer dúvidas sobre esta Política de Privacidade ou sobre os dados pessoais que tratamos, entre em contato com nosso Encarregado de Proteção de Dados Pessoais, por algum dos canais abaixo:</p>
+            <p>E-mail: <a href="mailto:psicologoairtonmolena@gmail.com">psicologoairtonmolena@gmail.com</a></p>
+            <p>Telefone: +55-11 94799-8270.</p>
+            <p>Endereço: a definir</p>
+            
+            <h6>11 – Jurisdição para Resolução de Conflitos</h6>
+            <p>Este documento é regido e deve ser interpretado de acordo com as leis da República Federativa do Brasil. Os eventuais litígios deverão ser apresentados no foro da comarca em que se encontra a sede da empresa. Fica eleito o Foro da Comarca de São Paulo/SP, como o competente para dirimir quaisquer questões porventura oriundas do presente documento, com expressa renúncia a qualquer outro, por mais privilegiado que seja.</p>
+            <p>Airton Molena Estudante Psicólogo CRP – como informado, estou terminando os estudos. Só irei prestar serviços após a obtenção do CRP-SP, fevereiro/2023.</p>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion__header flex--sb">
+            <div class="accordion__header-title">Modelos de contratos</div>
+            <div class="accordion__header-btn"></div>
+        </div>
+        <div class="accordion__body">
+            <h6>Modelos de Contratos de prestação de serviços em Psicologia</h6>
+            <p>Nesta página apresento sugestões de contratos de prestação de serviços em psicologia apresentados por conselhos regionais de psicologia.</p>
+            <p>Essas informações não querem dizer que o contrato a ser usado será o mesmo. Mas quer dizer que haverá um contrato para a prestação de serviços de forma escrita.</p>
+            <p><a href="https://www.crp-01.org.br/page_3889/Nota%20orientativa%20sobre%20encerramento%20de%20contratos%20de%20presta%C3%A7%C3%A3o%20de%20servi%C3%A7os%20psicol%C3%B3gicos" target="_blank">Nota orientativa sobre encerramento de contratos de prestação de serviços psicológicos</a></p>
+            <p><a href="https://www.crp-01.org.br/page_3953/SUGEST%C3%83O%20DE%20CONTRATO%20PARA%20PRESTA%C3%87%C3%83O%20DE%20SERVI%C3%87OS%20PSICOL%C3%93GICOS%20ENTRE%20AS%20PARTES%20A%20SEGUIR%20IDENTIFICADAS" target="_blank">Sugestão de contrato para prestação de serviços psicológicos entre as partes a seguir identificadas</a></p>
+            <p><a href="https://crppr.org.br/guia-contrato/" target="_blank">Guia de Orientação (CRP-PR) – Contrato de Prestação de Serviços</a></p>
+            
+            <h6 style="background: #FFBD00; padding: 5px 15px; width: 100%;"><i class="fa-regular fa-triangle-exclamation"></i>Alguns pontos que devem ser esclarecidos:</h6>
+            
+            <ul>
+                <li style="margin-left: -20px;"><h6>Desmarcações ou mudanças de horários (remarcação)</h6></li>
+            </ul>
+            <p><a style="text-decoration: none;">Importante: não há desmarcações de sessões e, sim, as remarcações.</a></p>
+            <p>O cliente assume um compromisso semanal, sendo assim, mesmo que não possa estar presente por qualquer motivo, pagará pela sessão se não remarcada. Se acontecer de uma remarcação ficar para o mês seguinte, o cliente é avisado que esta sessão será paga no mês em que deveria ter sido feita.</p>
+            <p>As desmarcações deverão ser feitas com antecedência de 24 horas. O psicólogo deverá ser avisado no caso de imprevistos que impeçam o comparecimento do cliente. Mudanças de horário só serão possíveis quando houver disponibilidade do psicólogo.</p>
+            <p>É importante ter sempre claro que o psicólogo é um profissional, que assume compromissos financeiros como todos. Dessa forma, quando reserva um horário e um valor está comprometendo seus recursos para cumprimento de outros compromissos, como aluguel, condomínio, etc.</p>
+            
+            <ul>
+                <li style="margin-left: -20px;"><h6>Faltas</h6></li>
+            </ul>
+            <p>Sessões em que o cliente não comparece, sem aviso antecipado, serão cobradas normalmente, salvo, motivos de extrema urgência. A partir de duas faltas consecutivas, sem aviso durante o tratamento, o atendimento será considerado interrompido e o cliente poderá perder sua vaga preferencial de horário.</p>
+            
+            <ul>
+                <li style="margin-left: -20px;"><h6>Férias</h6></li>
+            </ul>
+            <p>Quando as férias do cliente não coincidirem com as do terapeuta, o primeiro pagará as sessões normalmente no mês de suas férias, porém, posteriormente, serão repostas como extras, de acordo com a necessidade do próprio cliente e disponibilidade do terapeuta.</p>
+            <p>Para as férias do terapeuta. Não é ético cobrar por um serviço não prestado. Não haverá cobranças.</p>
+            <p>Como já comentado, os compromissos financeiros do terapeuta não param quando o Cliente tira férias. Dessa forma, é necessário, para a estabilidade financeira, que o terapeuta possa programar seus estudos e cursos de especializações, por exemplo.</p>
+            
+            <ul>
+                <li style="margin-left: -20px;"><h6>Reajuste</h6></li>
+            </ul>
+            <p>O reajuste é anual, conforme data e índice do Salário Mínimo.</p>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion__header flex--sb">
+            <div class="accordion__header-title">O que diz o CRP-SP?</div>
+            <div class="accordion__header-btn"></div>
+        </div>
+        <div class="accordion__body">
+            <div class="crp">
+                <h6>Quais as orientações para prestação de serviços psicológicos on-line?</h6>
+                <p>Publicado em: 14 de julho de 2020</p>
+                <a href="https://www.crpsp.org/noticia/view/2558/quais-as-orientacoes-para-prestacao-de-servicos-psicologicos-on-line#:~:text=A%20Resolu%C3%A7%C3%A3o%20CFP%2011%2F2018,e%2Dmail%2C%20entre%20outros." target="_blank" class="btn">Ler publicação</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Código de ética</h6>
+                <p>O Código de Ética do exercício profissional da Psicologia é um instrumento democrático e reflexivo orientado pelo compromisso ético-político para defesa da liberdade, da dignidade, da igualdade e da integridade mental e física.</p>
+                <a href="https://www.crpsp.org/pagina/view/49" target="_blank" class="btn">Ler publicação</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Atendimento Domiciliar e em Contextos Diversos</h6>
+                <p>Publicado em 9 de dezembro de 2021</p>
+                <p>Categoria: Manuais - CRP SP Orienta</p>
+                <a href="https://www.crpsp.org/uploads/impresso/165977/WKD9E900nmlBfiC0YXFp-TlhuqY1ylCS.pdf" target="_blank" class="btn">Visualizar documento</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Atendimento Psicológico Online</h6>
+                <p>Publicado em 9 de dezembro de 2021</p>
+                <p>Categoria: Manuais - CRP SP Orienta</p>
+                <a href="https://www.crpsp.org/uploads/impresso/165975/Yg1Iq58L8sKPSbVta1MG_IZ68fZlfb43.pdf" target="_blank" class="btn">Visualizar documento</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Atuação em consultório psicológico</h6>
+                <p>Publicado em 9 de dezembro de 2021</p>
+                <p>Categoria: Manuais - CRP SP Orienta</p>
+                <a href="https://www.crpsp.org/uploads/impresso/165973/5p5C2nvAlB0ji2mKraNJzQP1AmwA_5UL.pdf" target="_blank" class="btn">Visualizar documento</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Guarda e envio de documentos por computador</h6>
+                <a href="https://www.crpsp.org/uploads/impresso/165962/CIjfaMOINAspmdYePDEEFjep_EdZUb8t.pdf" target="_blank" class="btn">Visualizar documento</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Uso de redes sociais e aplicativos de mensagens instantâneas</h6>
+                <p>Publicado em 9 de dezembro de 2021</p>
+                <p>Categoria: Manuais - CRP SP Orienta</p>
+                <a href="https://www.crpsp.org/uploads/impresso/165936/ROiIk7k-bI_YDn9ZrNBOy_XZ_pDua7W5.pdf" target="_blank" class="btn">Visualizar documento</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Quanto tempo deve durar um atendimento psicológico?</h6>
+                <p>Publicado em 9 de dezembro de 2021</p>
+                <p>Categoria: Manuais - CRP SP Orienta</p>
+                <a href="https://www.crpsp.org/uploads/impresso/165945/TxpH_wt7mgn3-1Sqw4696QlEzbPZ0-5I.pdf" target="_blank" class="btn">Visualizar documento</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Quebra de sigilo diante da violação de direitos</h6>
+                <p>Publicado em 9 de dezembro de 2021</p>
+                <p>Categoria: Manuais - CRP SP Orienta</p>
+                <a href="https://www.crpsp.org/uploads/impresso/165943/uT0atpFoSyKuTCdgiHeV9ec_YOaCXEqC.pdf" target="_blank" class="btn">Visualizar documento</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="accordion">
+        <div class="accordion__header flex--sb">
+            <div class="accordion__header-title">Direitos e deveres</div>
+            <div class="accordion__header-btn"></div>
+        </div>
+        <div class="accordion__body">
+            <div class="crp">
+                <h6>Código de ética profissional do Psicólogo</h6>
+                <p>Publicado em agosto de 2005</p>
+                <a href="https://site.cfp.org.br/wp-content/uploads/2012/07/codigo-de-etica-psicologia.pdf" target="_blank" class="btn">Ver documento</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Código de ética</h6>
+                <p>O Código de Ética do exercício profissional da Psicologia é um instrumento democrático e reflexivo orientado pelo compromisso ético-político para defesa da liberdade, da dignidade, da igualdade e da integridade mental e física.</p>
+                <a href="https://www.crpsp.org/pagina/view/49" target="_blank" class="btn">Ler publicação</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Manual de Psicologia e Direitos Humanos</h6>
+                <p>Publicado em 2022</p>
+                <a href="https://www.crpsp.org/uploads/impresso/280889/qZoCK68ahOFrCxByujc_ukHoaEA_Mf_j.pdf" target="_blank" class="btn">Ver documento</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Tabela de honorários sugerida pelo CRP-SP</h6>
+                <p>Meus valores praticados são os do Limite Média.</p>
+                <a href="https://www.crpsp.org/pagina/view/65" target="_blank" class="btn">Ver tabela</a>
+            </div>
+            
+            <div class="crp">
+                <h6>Como apresentar ao CRP SP uma queixa ou representação contra uma/um psicóloga/o ou contra pessoa jurídica?</h6>
+                <p>Confira as orientações disponibilizadas diretamente no site do CRP-SP através do botão abaixo.</p>
+                <a href="https://www.crpsp.org/pagina/view/50" target="_blank" class="btn">Ver publicação</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    let accordionList = document.querySelectorAll('.accordion__list')
+    
+    accordionList.forEach(item => {
+        let accordion = item.querySelectorAll('.accordion')
+        
+        accordion.forEach(elem => {
+            elem.addEventListener('click', () => {
+                
+                if(!elem.classList.contains('active')){
+                    accordion.forEach(all => {
+                        all.classList.remove('active')
+                    })
+                }
+                
+                elem.classList.toggle('active')
+            })
+        })
+    })
+</script>
